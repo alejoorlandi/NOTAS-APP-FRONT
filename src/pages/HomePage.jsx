@@ -44,21 +44,23 @@ const HomePage = () => {
     )
   }
 
-  return (
-    <div className="grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] gap-4 xl:grid-cols-[repeat(auto-fit,_minmax(350px,_1fr))]">
-      {notes.map((note) => (
-        <CardNote
-          key={note._id}
-          title={note.title}
-          description={note.description}
-          id={note._id}
-          priority={note.priority}
-          isCompleted={note.isCompleted}
-          date={formatData(note.createdAt)}
-        />
-      ))}
-    </div>
-  );
+  else {
+    return (
+      <div className="grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] gap-4 xl:grid-cols-[repeat(auto-fit,_minmax(350px,_1fr))]">
+        {notes.map((note) => (
+          <CardNote
+            key={note._id}
+            title={note.title}
+            description={note.description}
+            id={note._id}
+            priority={note.priority}
+            isCompleted={note.isCompleted}
+            date={formatData(note.createdAt)}
+          />
+        ))}
+      </div>
+    );
+  }
 };
 
 export default HomePage;
