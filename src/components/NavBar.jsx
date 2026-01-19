@@ -3,13 +3,13 @@ import { PlusIcon } from "lucide-react";
 
 const NavBar = () => {
   return (
-    <header>
-      <div>
+    <header className="navbar bg-base-300 py-8">
+      <div className="w-full max-w-[1000px] mx-auto flex items-center justify-between">
         <NavLink className="text-3xl font-bold" to="/">
           TodoApp
         </NavLink>
 
-        <NavLink>
+        <NavLink className="btn btn-soft btn-primary font-bold text-[1.1em]">
           <PlusIcon />
           Crear una nota
         </NavLink>
