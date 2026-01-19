@@ -1,5 +1,6 @@
 import { SquarePen, Trash } from "lucide-react";
-const CardNote = ({ title, description, id }) => {
+// id
+const CardNote = ({ title, description, date }) => {
   return (
     <div className="card bg-base-300 w-full">
       <div className="card-body">
@@ -8,7 +9,7 @@ const CardNote = ({ title, description, id }) => {
         </h2>
         <p className="text-amber-50">{description}</p>
         <div className="flex justify-between items-center mt-6">
-          <time dateTime="">12 marzo de 2026</time>
+          <time dateTime={date}>{date}</time>
           <div className="flex gap-4">
             <SquarePen className="text-blue-400 cursor-pointer"></SquarePen>
             <Trash className="text-red-400 cursor-pointer"></Trash>

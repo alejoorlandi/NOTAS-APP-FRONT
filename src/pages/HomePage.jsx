@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CardNote from "../components/CardNote";
 import axios from "axios";
+import formatData from "../utils/formatDate";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const HomePage = () => {
@@ -31,6 +32,7 @@ const HomePage = () => {
           title={note.title}
           description={note.description}
           id={note._id}
+          date={formatData(note.createdAt)}
         />
       ))}
     </div>
