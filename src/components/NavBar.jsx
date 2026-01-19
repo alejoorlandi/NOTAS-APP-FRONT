@@ -3,7 +3,7 @@ import { PlusIcon } from "lucide-react";
 
 const NavBar = () => {
   return (
-    <header className="navbar bg-base-300 py-8 mb-8">
+    <header className="navbar bg-base-300 py-8 mb-10">
       <div className="w-full max-w-[1000px] mx-auto flex items-center justify-between">
         <NavLink className="text-3xl font-bold" to="/">
           TodoApp

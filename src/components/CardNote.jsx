@@ -1,15 +1,12 @@
 import { SquarePen, Trash } from "lucide-react";
-const CardNote = () => {
+const CardNote = ({ title, description, id }) => {
   return (
     <div className="card bg-base-300 w-full">
       <div className="card-body">
         <h2 className="card-title text-accent font-bold lg:text-2xl">
-          Card Title
+          {title}
         </h2>
-        <p className="text-amber-50">
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
-        </p>
+        <p className="text-amber-50">{description}</p>
         <div className="flex justify-between items-center mt-6">
           <time dateTime="">12 marzo de 2026</time>
           <div className="flex gap-4">
