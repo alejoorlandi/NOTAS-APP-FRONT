@@ -1,61 +1,65 @@
-// const EditNotePage = () => {
-//   return (
-//     <div>
-//       <h1>Edit Note Page</h1>
-//     </div>
-//   );
-// };
-
-// export default EditNotePage;
-
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import NoteForm from "../components/NoteForm";
-const apiURL = import.meta.env.VITE_API_URL;
+import { updateNote, fetchNotes } from "../store/slices/notesSlice";
 
 const EditNotePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [initialData, setInitialData] = useState({
-    title: "",
-    description: "",
-  });
+  const dispatch = useDispatch();
+
+  const { notes, status } = useSelector(state => state.notes);
+  const foundNote = notes.find(n => n._id === id);
+
+  const [initialData, setInitialData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${apiURL}/api/notes/${id}`).then((res) => {
+    if (foundNote) {
       setInitialData({
-        title: res.data.title,
-        description: res.data.description,
+        title: foundNote.title,
+        description: foundNote.description,
+        priority: foundNote.priority || 'low'
       });
-    });
-  }, [id]);
-
-  const handleUpdate = async (note) => {
-    await axios.put(`${apiURL}/api/notes/${id}`, note).then((res) => {
-      if (res.status === 200) {
-        toast.success("¡Nota actualizada con éxito!", {
-          position: "bottom-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
-        navigate("/");
-      } else {
-        toast.error("Error al actualizar la nota", {
-          position: "bottom-right",
-          autoClose: 3000,
-          theme: "colored",
-        });
+    } else {
+      // If note is not in store (e.g. refresh), fetch notes or specific note
+      // For simplicity, we re-fetch all notes if store is empty or just this note
+      if (status === 'idle') {
+        dispatch(fetchNotes());
       }
-    });
+    }
+  }, [id, foundNote, status, dispatch]);
+
+
+  const handleUpdate = async (noteData) => {
+    try {
+      await dispatch(updateNote({ id, note: noteData })).unwrap();
+      toast.success("¡Nota actualizada con éxito!", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
+      navigate("/");
+    } catch (err) {
+      toast.error("Error al actualizar la nota", {
+        position: "bottom-right",
+        autoClose: 3000,
+        theme: "colored",
+      });
+    }
   };
+
+  if (!initialData && status === 'succeeded' && !foundNote) {
+    return <div className="text-center mt-10">Nota no encontrada</div>
+  }
+
+  if (!initialData) return <div className="text-center mt-10">Cargando...</div>
 
   return (
     <div>
       <h1 className="text-5xl font-bold text-center mb-8">Editar Nota</h1>
-      <NoteForm initialData={initialData} onSubmit={handleUpdate} />
+      <NoteForm initialDate={initialData} onSubmit={handleUpdate} />
     </div>
   );
 };

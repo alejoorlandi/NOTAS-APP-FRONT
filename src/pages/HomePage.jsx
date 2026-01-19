@@ -1,28 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchNotes } from '../store/slices/notesSlice';
 import CardNote from "../components/CardNote";
-import axios from "axios";
 import formatData from "../utils/formatDate";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const HomePage = () => {
-  const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { notes, status, error } = useSelector((state) => state.notes);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/notes`);
+    if (status === 'idle') {
+      dispatch(fetchNotes());
+    }
+  }, [status, dispatch]);
 
-        setNotes(response.data);
-        setLoading(false);
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
+  if (status === 'loading') return <span>Cargando...</span>;
+  if (status === 'failed') return <span>Error: {error}</span>;
 
-  if (loading) return <span>Cargando...</span>;
+  if (notes.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+        <h2 className="text-2xl font-bold mb-2">No hay notas aún</h2>
+        <p className="text-gray-400">¡Crea tu primera nota para empezar!</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] gap-4 xl:grid-cols-[repeat(auto-fit,_minmax(350px,_1fr))]">
@@ -32,6 +35,8 @@ const HomePage = () => {
           title={note.title}
           description={note.description}
           id={note._id}
+          priority={note.priority}
+          isCompleted={note.isCompleted}
           date={formatData(note.createdAt)}
         />
       ))}

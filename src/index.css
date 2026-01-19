@@ -4,4 +4,18 @@
     themes: dim
 }
 
-;
+body {
+    min-height: 100vh;
+    @apply bg-base-200 text-base-content;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    @apply bg-base-300;
+}
+::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+}
