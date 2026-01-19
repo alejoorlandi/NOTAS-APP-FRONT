@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -17,7 +18,7 @@ const RegisterPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:3000/api/auth/register", formData);
+            await axios.post(`${API_URL}/auth/register`, formData);
             toast.success("Usuario registrado exitosamente");
             navigate("/login");
         } catch (error) {

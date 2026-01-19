@@ -6,6 +6,7 @@ import { setCredentials } from "../store/slices/authSlice";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -21,7 +22,7 @@ const LoginPage = () => {
         e.preventDefault();
         try {
             // Change URL if needed based on environment
-            const response = await axios.post("http://localhost:3000/api/auth/login", formData);
+            const response = await axios.post(`${API_URL}/auth/login`, formData);
             dispatch(setCredentials(response.data));
             toast.success("Login exitoso");
             navigate("/");
